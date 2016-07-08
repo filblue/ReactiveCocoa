@@ -226,7 +226,8 @@ class PropertySpec: QuickSpec {
 			it("should perform an action with the value") {
 				let property = MutableProperty(initialPropertyValue)
 
-				let result: Bool = property.withValue { $0.isEmpty }
+				var result: Bool!
+				property.withValue { result = $0.isEmpty }
 
 				expect(result) == false
 				expect(property.value) == initialPropertyValue
@@ -253,7 +254,7 @@ class PropertySpec: QuickSpec {
 
 				property <~ producer
 				property.producer.startWithNext { _ in
-					value = property.withValue { $0 + 1 }
+					property.withValue { value = $0 + 1 }
 				}
 
 				observer.sendNext(10)

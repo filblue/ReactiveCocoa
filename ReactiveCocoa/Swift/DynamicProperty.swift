@@ -27,8 +27,12 @@ import enum Result.NoError
 		}
 	}
 
-	public var atomic: AnyAtomic<Value> {
-		return self.property?.atomic ?? AnyAtomic(value: nil)
+	public func withValue(f: (Value) -> Void) {
+		if let property = self.property {
+			property.withValue(f)
+		} else {
+			f(nil)
+		}
 	}
 	
 	/// A producer that will create a Key-Value Observer for the given object,
